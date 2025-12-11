@@ -51,7 +51,7 @@ public class GettingStartedApplication {
             while (resultSet.next()) {
                 output.add(
                         "Timestamp: " + resultSet.getTimestamp("tick") +
-                                " | Random: " + resultSet.getString("random_string"));
+                                " " + resultSet.getString("random_string"));
             }
 
             model.put("records", output);
