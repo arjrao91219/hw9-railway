@@ -11,6 +11,8 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @SpringBootApplication
 @Controller
@@ -60,6 +62,8 @@ public class GettingStartedApplication {
             model.put("message", t.getMessage());
             return "error";
         }
+
+
     }
 
     private String getRandomString() {
@@ -71,6 +75,36 @@ public class GettingStartedApplication {
         }
         return sb.toString();
     }
+
+        @GetMapping("/dbinput")
+    public String showDbInputForm(Map<String, Object> model) {
+        // optional message text
+        return "dbinput";
+    }
+
+    @PostMapping("/dbinput")
+    public String handleDbInput(
+            @RequestParam("userInput") String userInput,
+            Map<String, Object> model) {
+
+        System.out.println("User input from /dbinput: " + userInput);
+
+        try (Connection connection = dataSource.getConnection()) {
+            final var statement = connection.prepareStatement(
+                "INSERT INTO table_timestamp_and_random_string (tick, random_string) " +
+                "VALUES (now(), ?)"
+            );
+            statement.setString(1, userInput);
+            statement.executeUpdate();
+
+            model.put("message", "Saved: " + userInput);
+        } catch (Throwable t) {
+            model.put("message", "Error: " + t.getMessage());
+        }
+
+        return "dbinput";
+    }
+
 
     public static void main(String[] args) {
         SpringApplication.run(GettingStartedApplication.class, args);

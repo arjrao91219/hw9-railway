@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Database Input</title>
+    <link rel="stylesheet" href="/stylesheets/main.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Database Input</h1>
+
+      <form action="/dbinput" method="post">
+        <label for="userInput">Enter a string to store in the database:</label>
+        <input id="userInput" name="userInput" type="text" />
+        <button type="submit">Submit</button>
+      </form>
+
+      <p th:if="${message}" th:text="${message}"></p>
+
+      <p>
+        After submitting, view all entries at
+        <a href="/db">/db</a>.
+      </p>
+    </div>
+  </body>
+</html>
